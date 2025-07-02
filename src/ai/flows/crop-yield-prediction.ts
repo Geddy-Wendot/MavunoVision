@@ -24,6 +24,8 @@ export type CropYieldInput = z.infer<typeof CropYieldInputSchema>;
 
 const CropYieldOutputSchema = z.object({
   predictedYield: z.number().describe('The predicted crop yield in tons.'),
+  recommendedFertilizer: z.string().describe('The recommended fertilizer type for maximum yield given the inputs.'),
+  irrigationAdvice: z.string().describe('Advice on irrigation, e.g., "Irrigation recommended due to low rainfall." or "No irrigation needed."'),
 });
 export type CropYieldOutput = z.infer<typeof CropYieldOutputSchema>;
 
@@ -35,19 +37,25 @@ const prompt = ai.definePrompt({
   name: 'cropYieldPredictionPrompt',
   input: {schema: CropYieldInputSchema},
   output: {schema: CropYieldOutputSchema},
-  prompt: `You are an expert agricultural model, capable of predicting crop yields based on historical and environmental data for Kenya.
+  prompt: `You are an expert agricultural model, capable of predicting crop yields and providing recommendations based on historical and environmental data for Kenya.
 
-  Predict the crop yield in tons for the following input data:
+  Based on the following input data, provide a predicted crop yield, recommend the best fertilizer to use, and give advice on irrigation.
 
-  Crop: {{{crop}}}
-  County: {{{county}}}
-  Year: {{{year}}}
-  Area (hectares): {{{area}}}
-  Rainfall (mm): {{{rainfall}}}
-  Fertilizer Type: {{{fertilizer}}}
-  Soil Quality: {{{soilQuality}}}
+  Input Data:
+  - Crop: {{{crop}}}
+  - County: {{{county}}}
+  - Year: {{{year}}}
+  - Area (hectares): {{{area}}}
+  - Rainfall (mm): {{{rainfall}}}
+  - Fertilizer Type Used for Prediction: {{{fertilizer}}}
+  - Soil Quality: {{{soilQuality}}}
 
-  Give your answer as a floating point number.  Do not include units or other verbiage.`,
+  Your Task:
+  1.  **Predict Yield**: Predict the crop yield in tons. Give your answer as a floating point number for the 'predictedYield' field.
+  2.  **Recommend Fertilizer**: Based on all inputs, determine the single best fertilizer type for maximum yield.
+  3.  **Advise on Irrigation**: Based on the crop's water needs and the predicted rainfall, provide concise irrigation advice. State if it's needed and briefly why.
+
+  Give your answer as a valid JSON object. Do not include units or other verbiage in the output fields.`,
 });
 
 const predictCropYieldFlow = ai.defineFlow(

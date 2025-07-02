@@ -123,7 +123,7 @@ export const cropData: CropData[] = [
   },
   {
       name: 'Avocado',
-      counties: ["Murang'a", "Kiambu", "Nyeri", "Kirinyaga", "Embu", "Meru", "Kisii", "Nakuru"],
+      counties: ["Murang'a", "Kiambu", "Nyeri", "Kirinyaga", "Embu", "Meru", "Kisii", "Nakuru", "Uasin Gishu"],
       historicalData: [
           { year: 2015, yield: 7 },
           { year: 2016, yield: 8 },
@@ -153,7 +153,7 @@ export const cropData: CropData[] = [
   },
   {
       name: 'Sorghum',
-      counties: ["Tharaka-Nithi", "Meru", "Embu", "Kitui", "Makueni", "Machakos", "Homa Bay", "Migori", "Siaya", "Busia", "Baringo"],
+      counties: ["Tharaka-Nithi", "Meru", "Embu", "Kitui", "Makueni", "Machakos", "Homa Bay", "Migori", "Siaya", "Busia", "Baringo", "Turkana"],
       historicalData: [
           { year: 2015, yield: 1.0 },
           { year: 2016, yield: 1.1 },
@@ -165,11 +165,86 @@ export const cropData: CropData[] = [
           { year: 2022, yield: 1.5 },
           { year: 2023, yield: 1.4 },
       ]
+  },
+  {
+      name: 'Millet',
+      counties: ["Kitui", "Machakos", "Makueni", "Tharaka-Nithi", "Busia", "Siaya", "Baringo", "West Pokot"],
+      historicalData: [
+          { year: 2015, yield: 0.7 },
+          { year: 2016, yield: 0.8 },
+          { year: 2017, yield: 0.75 },
+          { year: 2018, yield: 0.9 },
+          { year: 2019, yield: 0.95 },
+          { year: 2020, yield: 1.0 },
+          { year: 2021, yield: 1.1 },
+          { year: 2022, yield: 1.05 },
+          { year: 2023, yield: 1.12 },
+      ]
+  },
+  {
+      name: 'Cassava',
+      counties: ["Busia", "Siaya", "Kisumu", "Homa Bay", "Migori", "Kilifi", "Kwale", "Lamu", "Taita-Taveta", "Kitui"],
+      historicalData: [
+          { year: 2015, yield: 10 },
+          { year: 2016, yield: 11 },
+          { year: 2017, yield: 10.8 },
+          { year: 2018, yield: 12 },
+          { year: 2019, yield: 12.5 },
+          { year: 2020, yield: 13 },
+          { year: 2021, yield: 13.5 },
+          { year: 2022, yield: 14 },
+          { year: 2023, yield: 14.2 },
+      ]
+  },
+  {
+      name: 'Sweet Potatoes',
+      counties: ["Homa Bay", "Migori", "Busia", "Vihiga", "Kakamega", "Nyamira", "Kisii", "Makueni", "Kitui", "Machakos"],
+      historicalData: [
+          { year: 2015, yield: 5 },
+          { year: 2016, yield: 5.5 },
+          { year: 2017, yield: 5.2 },
+          { year: 2018, yield: 6 },
+          { year: 2019, yield: 6.3 },
+          { year: 2020, yield: 6.5 },
+          { year: 2021, yield: 6.8 },
+          { year: 2022, yield: 7 },
+          { year: 2023, yield: 7.1 },
+      ]
+  },
+  {
+      name: 'Tomatoes',
+      counties: ["Kirinyaga", "Kajiado", "Nakuru", "Kiambu", "Murang'a", "Taita-Taveta"],
+      historicalData: [
+          { year: 2015, yield: 20 },
+          { year: 2016, yield: 22 },
+          { year: 2017, yield: 21 },
+          { year: 2018, yield: 24 },
+          { year: 2019, yield: 25 },
+          { year: 2020, yield: 23 },
+          { year: 2021, yield: 26 },
+          { year: 2022, yield: 28 },
+          { year: 2023, yield: 27 },
+      ]
+  },
+  {
+      name: 'Cabbages',
+      counties: ["Kiambu", "Nyandarua", "Nyeri", "Meru", "Nakuru", "Uasin Gishu", "Elgeyo-Marakwet"],
+      historicalData: [
+          { year: 2015, yield: 30 },
+          { year: 2016, yield: 32 },
+          { year: 2017, yield: 31 },
+          { year: 2018, yield: 35 },
+          { year: 2019, yield: 36 },
+          { year: 2020, yield: 34 },
+          { year: 2021, yield: 38 },
+          { year: 2022, yield: 40 },
+          { year: 2023, yield: 39 },
+      ]
   }
 ];
 
-export const fertilizerTypes = ['Urea', 'DAP', 'CAN', 'NPK', 'Manure'];
-export const soilTypes = ['Loam', 'Clay', 'Sandy', 'Silt', 'Peat'];
+export const fertilizerTypes = ['Urea', 'DAP', 'CAN', 'NPK', 'Manure', 'Sulphate of Ammonia (SA)'];
+export const soilTypes = ['Loam', 'Clay', 'Sandy', 'Silt', 'Peat', 'Chalky'];
 
 // Mock function to get predicted rainfall
 // In a real app, this could come from a weather API or a more complex model

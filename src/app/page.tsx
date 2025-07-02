@@ -6,12 +6,16 @@ import { PredictionForm, type PredictionFormState } from '@/components/mavuno/Pr
 import { YieldDisplay } from '@/components/mavuno/YieldDisplay';
 import { TrendAnalysis } from '@/components/mavuno/TrendAnalysis';
 import { type CropYieldOutput } from '@/ai/flows/crop-yield-prediction';
+import { type CropRecommendationOutput } from '@/ai/flows/crop-recommendation';
 import { Card, CardContent } from '@/components/ui/card';
+import { RecommendationDisplay } from '@/components/mavuno/RecommendationDisplay';
 
 export default function Home() {
   const [predictionResult, setPredictionResult] = useState<CropYieldOutput | null>(null);
+  const [recommendationResult, setRecommendationResult] = useState<CropRecommendationOutput | null>(null);
   const [formState, setFormState] = useState<PredictionFormState | null>(null);
   const [isPredicting, setIsPredicting] = useState(false);
+  const [isRecommending, setIsRecommending] = useState(false);
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
@@ -21,12 +25,17 @@ export default function Home() {
           <div className="md:col-span-2">
             <PredictionForm 
               onPrediction={setPredictionResult}
+              onRecommendation={setRecommendationResult}
               onFormStateChange={setFormState}
               setPredicting={setIsPredicting}
+              setRecommending={setIsRecommending}
+              isPredicting={isPredicting}
+              isRecommending={isRecommending}
             />
           </div>
           <div className="md:col-span-3 space-y-8">
             <YieldDisplay result={predictionResult} isLoading={isPredicting} />
+            <RecommendationDisplay result={recommendationResult} isLoading={isRecommending} />
             {formState?.crop && formState?.county ? (
                <TrendAnalysis cropName={formState.crop} countyName={formState.county} />
             ) : (
