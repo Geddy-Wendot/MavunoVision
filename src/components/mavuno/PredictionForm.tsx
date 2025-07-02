@@ -231,7 +231,7 @@ export function PredictionForm({ onPrediction, onRecommendation, onFormStateChan
                 <FormItem>
                     <FormLabel>Predicted Rainfall (mm)</FormLabel>
                     <FormControl>
-                    <Input type="number" readOnly placeholder="Auto-populated" {...field} className="bg-muted"/>
+                    <Input type="number" readOnly placeholder="Auto-populated" {...field} value={field.value ?? ""} className="bg-muted"/>
                     </FormControl>
                     <FormMessage />
                 </FormItem>
