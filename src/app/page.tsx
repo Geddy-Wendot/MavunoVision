@@ -27,12 +27,12 @@ export default function Home() {
           </div>
           <div className="md:col-span-3 space-y-8">
             <YieldDisplay result={predictionResult} isLoading={isPredicting} />
-            {formState?.crop ? (
-               <TrendAnalysis cropName={formState.crop} />
+            {formState?.crop && formState?.county ? (
+               <TrendAnalysis cropName={formState.crop} countyName={formState.county} />
             ) : (
                 <Card>
                     <CardContent className="pt-6">
-                        <p className="text-muted-foreground text-center">Select a crop to view its historical trend analysis.</p>
+                        <p className="text-muted-foreground text-center">Select a county and crop to view its historical trend analysis.</p>
                     </CardContent>
                 </Card>
             )}

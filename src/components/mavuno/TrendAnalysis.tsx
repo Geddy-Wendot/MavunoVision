@@ -18,6 +18,7 @@ import { TrendingUp } from 'lucide-react';
 
 interface TrendAnalysisProps {
   cropName: string;
+  countyName: string;
 }
 
 const chartConfig = {
@@ -27,7 +28,7 @@ const chartConfig = {
   },
 };
 
-export function TrendAnalysis({ cropName }: TrendAnalysisProps) {
+export function TrendAnalysis({ cropName, countyName }: TrendAnalysisProps) {
   const [summary, setSummary] = React.useState<string | null>(null);
   const [isLoading, setIsLoading] = React.useState(false);
   const { toast } = useToast();
@@ -35,7 +36,7 @@ export function TrendAnalysis({ cropName }: TrendAnalysisProps) {
   const data = React.useMemo(() => cropData.find(c => c.name === cropName)?.historicalData || [], [cropName]);
 
   React.useEffect(() => {
-    if (!cropName || data.length === 0) return;
+    if (!cropName || !countyName || data.length === 0) return;
 
     const fetchSummary = async () => {
       setIsLoading(true);
@@ -44,7 +45,7 @@ export function TrendAnalysis({ cropName }: TrendAnalysisProps) {
         const historicalDataString = data.map(d => `Year ${d.year}: ${d.yield} tons/ha`).join(', ');
         const result = await generateYieldTrendSummary({
           crop: cropName,
-          county: "Nakuru", // Placeholder county
+          county: countyName,
           historicalData: historicalDataString,
         });
         setSummary(result.summary);
@@ -61,14 +62,14 @@ export function TrendAnalysis({ cropName }: TrendAnalysisProps) {
     };
 
     fetchSummary();
-  }, [cropName, data, toast]);
+  }, [cropName, countyName, data, toast]);
 
   return (
     <Card>
       <CardHeader>
         <CardTitle className="font-headline flex items-center gap-2">
             <TrendingUp className="w-6 h-6" />
-            Historical Trend for {cropName}
+            Historical Trend for {cropName} in {countyName}
         </CardTitle>
         <CardDescription>Yield in tons per hectare from the last 9 years.</CardDescription>
       </CardHeader>
@@ -90,7 +91,7 @@ export function TrendAnalysis({ cropName }: TrendAnalysisProps) {
         </ChartContainer>
 
         <div className="mt-6">
-            <h4 className="font-semibold mb-2 font-headline">AI-Generated Summary</h4>
+            <h4 className="font-semibold mb-2 font-headline">AI-Generated Summary for {countyName}</h4>
             {isLoading ? (
                 <div className="space-y-2">
                     <Skeleton className="h-4 w-full" />

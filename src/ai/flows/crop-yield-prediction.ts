@@ -13,6 +13,7 @@ import {z} from 'genkit';
 
 const CropYieldInputSchema = z.object({
   crop: z.string().describe('The type of crop.'),
+  county: z.string().describe('The county in Kenya where the crop is grown.'),
   year: z.number().describe('The year for which the prediction is being made.'),
   area: z.number().describe('The area of the land in hectares.'),
   rainfall: z.number().describe('The amount of rainfall in mm.'),
@@ -34,11 +35,12 @@ const prompt = ai.definePrompt({
   name: 'cropYieldPredictionPrompt',
   input: {schema: CropYieldInputSchema},
   output: {schema: CropYieldOutputSchema},
-  prompt: `You are an expert agricultural model, capable of predicting crop yields based on historical and environmental data.
+  prompt: `You are an expert agricultural model, capable of predicting crop yields based on historical and environmental data for Kenya.
 
   Predict the crop yield in tons for the following input data:
 
   Crop: {{{crop}}}
+  County: {{{county}}}
   Year: {{{year}}}
   Area (hectares): {{{area}}}
   Rainfall (mm): {{{rainfall}}}

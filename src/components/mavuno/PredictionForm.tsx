@@ -21,13 +21,14 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { cropData, fertilizerTypes, soilTypes } from "@/lib/data";
+import { kenyanCounties, cropData, fertilizerTypes, soilTypes, getPredictedRainfall, type CropData } from "@/lib/data";
 import { predictCropYield, type CropYieldOutput } from "@/ai/flows/crop-yield-prediction";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
 import React from "react";
 
 const formSchema = z.object({
+  county: z.string({ required_error: "Please select a county." }),
   crop: z.string({ required_error: "Please select a crop." }),
   year: z.coerce.number().min(new Date().getFullYear(), { message: `Year must be ${new Date().getFullYear()} or later.` }),
   area: z.coerce.number().positive({ message: "Area must be a positive number." }),
@@ -46,29 +47,52 @@ interface PredictionFormProps {
 
 export function PredictionForm({ onPrediction, onFormStateChange, setPredicting }: PredictionFormProps) {
   const { toast } = useToast();
+  const [availableCrops, setAvailableCrops] = React.useState<CropData[]>([]);
   
   const form = useForm<PredictionFormState>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       year: new Date().getFullYear() + 1,
       area: 10,
-      rainfall: 500,
     },
   });
 
-  const { formState, watch } = form;
+  const { formState, watch, control, setValue } = form;
+  const watchedCounty = watch("county");
+  const watchedYear = watch("year");
   
   React.useEffect(() => {
-    const subscription = watch((value, { name }) => {
+    const subscription = watch((value) => {
       const parsedValues = formSchema.safeParse(value);
       if (parsedValues.success) {
         onFormStateChange(parsedValues.data);
-      } else if (name === 'crop') {
-        onFormStateChange({ ...form.getValues(), crop: value.crop! });
+      } else {
+        onFormStateChange(value as PredictionFormState);
       }
     });
     return () => subscription.unsubscribe();
-  }, [watch, onFormStateChange, form]);
+  }, [watch, onFormStateChange]);
+
+  React.useEffect(() => {
+    if (watchedCounty) {
+      const filteredCrops = cropData.filter(crop => crop.counties.includes(watchedCounty));
+      setAvailableCrops(filteredCrops);
+      // Reset crop selection if the current one is not in the new list
+      const currentCrop = form.getValues("crop");
+      if (currentCrop && !filteredCrops.some(c => c.name === currentCrop)) {
+          setValue("crop", "", { shouldValidate: true });
+      }
+    } else {
+      setAvailableCrops([]);
+    }
+  }, [watchedCounty, setValue, form]);
+
+  React.useEffect(() => {
+    if (watchedCounty && watchedYear >= new Date().getFullYear()) {
+        const predictedRainfall = getPredictedRainfall(watchedCounty, watchedYear);
+        setValue("rainfall", predictedRainfall, { shouldValidate: true });
+    }
+  }, [watchedCounty, watchedYear, setValue]);
 
 
   async function onSubmit(values: PredictionFormState) {
@@ -99,19 +123,39 @@ export function PredictionForm({ onPrediction, onFormStateChange, setPredicting 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
-              control={form.control}
+                control={control}
+                name="county"
+                render={({ field }) => (
+                    <FormItem>
+                    <FormLabel>County</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Select a county" />
+                        </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                        {kenyanCounties.sort().map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                        </SelectContent>
+                    </Select>
+                    <FormMessage />
+                    </FormItem>
+                )}
+            />
+            <FormField
+              control={control}
               name="crop"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Crop</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select onValueChange={field.onChange} value={field.value || ""} disabled={!watchedCounty}>
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select a crop" />
+                        <SelectValue placeholder={watchedCounty ? "Select a crop" : "Select a county first"} />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {cropData.map(c => <SelectItem key={c.name} value={c.name}>{c.name}</SelectItem>)}
+                      {availableCrops.map(c => <SelectItem key={c.name} value={c.name}>{c.name}</SelectItem>)}
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -120,7 +164,7 @@ export function PredictionForm({ onPrediction, onFormStateChange, setPredicting 
             />
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <FormField
-                  control={form.control}
+                  control={control}
                   name="year"
                   render={({ field }) => (
                     <FormItem>
@@ -133,7 +177,7 @@ export function PredictionForm({ onPrediction, onFormStateChange, setPredicting 
                   )}
                 />
                 <FormField
-                  control={form.control}
+                  control={control}
                   name="area"
                   render={({ field }) => (
                     <FormItem>
@@ -147,13 +191,13 @@ export function PredictionForm({ onPrediction, onFormStateChange, setPredicting 
                 />
             </div>
              <FormField
-                control={form.control}
+                control={control}
                 name="rainfall"
                 render={({ field }) => (
                 <FormItem>
-                    <FormLabel>Expected Rainfall (mm)</FormLabel>
+                    <FormLabel>Predicted Rainfall (mm)</FormLabel>
                     <FormControl>
-                    <Input type="number" placeholder="e.g. 500" {...field} />
+                    <Input type="number" placeholder="Select county and year" {...field} />
                     </FormControl>
                     <FormMessage />
                 </FormItem>
@@ -161,7 +205,7 @@ export function PredictionForm({ onPrediction, onFormStateChange, setPredicting 
             />
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <FormField
-                control={form.control}
+                control={control}
                 name="fertilizer"
                 render={({ field }) => (
                     <FormItem>
@@ -181,7 +225,7 @@ export function PredictionForm({ onPrediction, onFormStateChange, setPredicting 
                 )}
                 />
                 <FormField
-                control={form.control}
+                control={control}
                 name="soilQuality"
                 render={({ field }) => (
                     <FormItem>
