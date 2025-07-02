@@ -24,8 +24,9 @@ const PlantDiagnosisOutputSchema = z.object({
     isPlant: z.boolean().describe('Whether or not the image contains a plant.'),
     plantName: z.string().describe('The common name of the identified plant.').optional(),
     isHealthy: z.boolean().describe('Whether the plant appears to be healthy.'),
-    diagnosis: z.string().describe("The diagnosis of the plant's health issue, if any.").optional(),
-    remedy: z.string().describe('A recommended remedy or course of action to address the issue.').optional(),
+    diagnosis: z.string().describe("The diagnosis of the plant's health issue, if any (e.g., 'Powdery Mildew', 'Aphid Infestation').").optional(),
+    possibleCause: z.string().describe("The likely environmental or pathological cause of the issue (e.g., 'High humidity and poor air circulation', 'Overwatering').").optional(),
+    remedy: z.string().describe('A recommended mode of treatment or course of action to address the issue.').optional(),
 });
 export type PlantDiagnosisOutput = z.infer<typeof PlantDiagnosisOutputSchema>;
 
@@ -42,9 +43,11 @@ const prompt = ai.definePrompt({
   1.  First, determine if the image actually contains a plant. If not, set 'isPlant' to false and provide no other information.
   2.  If it is a plant, identify its common name and populate 'plantName'.
   3.  Assess the plant's health. Look for signs of disease, pests, or nutrient deficiencies.
-  4.  If the plant is healthy, set 'isHealthy' to true and leave 'diagnosis' and 'remedy' empty.
-  5.  If the plant is unhealthy, set 'isHealthy' to false. Provide a concise 'diagnosis' of the problem (e.g., "Powdery Mildew", "Aphid Infestation", "Nitrogen Deficiency").
-  6.  Provide a practical, actionable 'remedy' for the diagnosed issue. This could involve organic or chemical treatments, or changes in care.
+  4.  If the plant is healthy, set 'isHealthy' to true and leave 'diagnosis', 'possibleCause', and 'remedy' empty.
+  5.  If the plant is unhealthy, set 'isHealthy' to false.
+      - Provide a concise 'diagnosis' of the problem (e.g., "Powdery Mildew", "Aphid Infestation", "Nitrogen Deficiency").
+      - Describe the 'possibleCause' of the issue (e.g., "High humidity and poor air circulation", "Overwatering leading to root rot").
+      - Provide a practical, actionable 'remedy' which is the recommended mode of treatment. This could involve organic or chemical treatments, or changes in care.
 
   Use the following information for your analysis.
 

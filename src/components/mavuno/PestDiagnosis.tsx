@@ -10,7 +10,7 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { diagnosePlantDisease, type PlantDiagnosisOutput } from '@/ai/flows/plant-disease-diagnosis';
-import { Loader2, AlertTriangle, Sparkles, CheckCircle, Bug, ShieldCheck, Info } from 'lucide-react';
+import { Loader2, AlertTriangle, Sparkles, CheckCircle, Bug, ShieldCheck, Info, HelpCircle } from 'lucide-react';
 import { Skeleton } from '../ui/skeleton';
 
 export function PestDiagnosis() {
@@ -118,22 +118,43 @@ export function PestDiagnosis() {
                         </AlertDescription>
                     </Alert>
                 ) : (
-                    <>
-                        <Alert variant="destructive">
-                            <Bug className="h-4 w-4" />
-                            <AlertTitle>Diagnosis: {result.diagnosis || "Unhealthy"}</AlertTitle>
-                            <AlertDescription>
-                                The plant appears to be unhealthy. See the recommended remedy below.
-                            </AlertDescription>
-                        </Alert>
-                         <Alert>
-                            <ShieldCheck className="h-4 w-4" />
-                            <AlertTitle>Recommended Remedy</AlertTitle>
-                            <AlertDescription>
-                                {result.remedy || "No specific remedy provided. Ensure proper watering, sunlight, and nutrients."}
-                            </AlertDescription>
-                        </Alert>
-                    </>
+                    <div className="space-y-4">
+                        <div className="p-4 rounded-md border border-destructive/50 bg-destructive/5">
+                            <div className="flex items-center gap-3">
+                                <div className="p-2 bg-destructive/10 rounded-full">
+                                    <Bug className="h-5 w-5 text-destructive" />
+                                </div>
+                                <div>
+                                    <h4 className="font-semibold text-destructive">Diagnosis</h4>
+                                    <p className="text-sm text-destructive/90">{result.diagnosis || "Unhealthy"}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="p-4 rounded-md border">
+                            <div className="flex items-center gap-3">
+                                <div className="p-2 bg-accent/10 rounded-full">
+                                    <HelpCircle className="h-5 w-5 text-accent" />
+                                </div>
+                                <div>
+                                    <h4 className="font-semibold">Possible Cause</h4>
+                                    <p className="text-sm text-muted-foreground">{result.possibleCause || "The cause could not be determined. Check for common issues."}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="p-4 rounded-md border border-primary/50 bg-primary/5">
+                            <div className="flex items-center gap-3">
+                                <div className="p-2 bg-primary/10 rounded-full">
+                                    <ShieldCheck className="h-5 w-5 text-primary" />
+                                </div>
+                                <div>
+                                    <h4 className="font-semibold text-primary">Recommended Treatment</h4>
+                                    <p className="text-sm text-muted-foreground">{result.remedy || "Ensure proper watering, sunlight, and nutrients."}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 )}
             </CardContent>
         </Card>
