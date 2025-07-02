@@ -1,4 +1,3 @@
-// Implemented with Genkit
 'use server';
 /**
  * @fileOverview Predicts crop yields based on input data using a pre-trained model.
@@ -10,13 +9,13 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
+import { getPredictedRainfall } from '@/ai/tools/weather-tool';
 
 const CropYieldInputSchema = z.object({
   crop: z.string().describe('The type of crop.'),
   county: z.string().describe('The county in Kenya where the crop is grown.'),
   year: z.number().describe('The year for which the prediction is being made.'),
   area: z.number().describe('The area of the land in hectares.'),
-  rainfall: z.number().describe('The amount of rainfall in mm.'),
   fertilizer: z.string().describe('Type of fertilizer used.'),
   soilQuality: z.string().describe('Quality of the soil'),
 });
@@ -37,16 +36,18 @@ const prompt = ai.definePrompt({
   name: 'cropYieldPredictionPrompt',
   input: {schema: CropYieldInputSchema},
   output: {schema: CropYieldOutputSchema},
+  tools: [getPredictedRainfall],
   prompt: `You are an expert agricultural model, capable of predicting crop yields and providing recommendations based on historical and environmental data for Kenya.
 
-  Based on the following input data, provide a predicted crop yield, recommend the best fertilizer to use, and give advice on irrigation.
+  First, use the getPredictedRainfall tool to find the predicted rainfall for the given county and year.
+
+  Then, based on that rainfall data and the following input data, provide a predicted crop yield, recommend the best fertilizer to use, and give advice on irrigation.
 
   Input Data:
   - Crop: {{{crop}}}
   - County: {{{county}}}
   - Year: {{{year}}}
   - Area (hectares): {{{area}}}
-  - Rainfall (mm): {{{rainfall}}}
   - Fertilizer Type Used for Prediction: {{{fertilizer}}}
   - Soil Quality: {{{soilQuality}}}
 

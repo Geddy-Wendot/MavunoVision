@@ -10,12 +10,12 @@
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 import { cropData } from '@/lib/data';
+import { getPredictedRainfall } from '@/ai/tools/weather-tool';
 
 const CropRecommendationInputSchema = z.object({
   county: z.string().describe('The county in Kenya.'),
   year: z.number().describe('The year for which the recommendation is being made.'),
   area: z.number().describe('The area of the land in hectares.'),
-  rainfall: z.number().describe('The predicted amount of rainfall in mm.'),
   soilQuality: z.string().describe('The quality of the soil.'),
 });
 export type CropRecommendationInput = z.infer<typeof CropRecommendationInputSchema>;
@@ -39,9 +39,12 @@ const prompt = ai.definePrompt({
   name: 'cropRecommendationPrompt',
   input: {schema: CropRecommendationInputSchema},
   output: {schema: CropRecommendationOutputSchema},
+  tools: [getPredictedRainfall],
   prompt: `You are an expert agronomist providing advice to farmers in Kenya.
 
-  Based on the following conditions, recommend the top 3 most suitable crops to plant. The available crops to choose from are: ${allCrops}.
+  Your first step is to use the getPredictedRainfall tool to find the predicted rainfall for the given county and year.
+
+  Based on that rainfall data and the following conditions, recommend the top 3 most suitable crops to plant. The available crops to choose from are: ${allCrops}.
 
   For each recommendation, provide a concise reason explaining why it's a good choice for the given county, climate, and soil.
 
@@ -49,7 +52,6 @@ const prompt = ai.definePrompt({
   - County: {{{county}}}
   - Year: {{{year}}}
   - Land Area (hectares): {{{area}}}
-  - Predicted Rainfall (mm): {{{rainfall}}}
   - Soil Quality: {{{soilQuality}}}
 
   Return your response as a valid JSON object.`,

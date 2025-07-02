@@ -21,7 +21,7 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { kenyanCounties, cropData, fertilizerTypes, soilTypes, getPredictedRainfall, type CropData } from "@/lib/data";
+import { kenyanCounties, cropData, fertilizerTypes, soilTypes, type CropData } from "@/lib/data";
 import { predictCropYield, type CropYieldOutput } from "@/ai/flows/crop-yield-prediction";
 import { getCropRecommendation, type CropRecommendationOutput } from "@/ai/flows/crop-recommendation";
 import { useToast } from "@/hooks/use-toast";
@@ -33,7 +33,6 @@ const formSchema = z.object({
   crop: z.string({ required_error: "Please select a crop." }),
   year: z.coerce.number().min(new Date().getFullYear(), { message: `Year must be ${new Date().getFullYear()} or later.` }),
   area: z.coerce.number().positive({ message: "Area must be a positive number." }),
-  rainfall: z.coerce.number().positive({ message: "Rainfall must be a positive number." }),
   fertilizer: z.string({ required_error: "Please select a fertilizer type." }),
   soilQuality: z.string({ required_error: "Please select a soil quality." }),
 });
@@ -64,10 +63,9 @@ export function PredictionForm({ onPrediction, onRecommendation, onFormStateChan
     },
   });
 
-  const { formState, watch, control, setValue, getValues } = form;
+  const { watch, control, setValue, getValues } = form;
   const watchedCounty = watch("county");
   const watchedCrop = watch("crop");
-  const watchedYear = watch("year");
   
   React.useEffect(() => {
     const subscription = watch((value) => {
@@ -88,13 +86,6 @@ export function PredictionForm({ onPrediction, onRecommendation, onFormStateChan
     }
   }, [watchedCounty, setValue, form, watchedCrop]);
 
-  React.useEffect(() => {
-    if (watchedCounty && watchedYear >= new Date().getFullYear()) {
-        const predictedRainfall = getPredictedRainfall(watchedCounty, watchedYear);
-        setValue("rainfall", predictedRainfall, { shouldValidate: true });
-    }
-  }, [watchedCounty, watchedYear, setValue]);
-
   const handleGetRecommendation = async () => {
     const values = getValues();
     const parsed = recommendationSchema.safeParse(values);
@@ -106,7 +97,7 @@ export function PredictionForm({ onPrediction, onRecommendation, onFormStateChan
         variant: "destructive",
       });
       // Trigger validation on the fields
-      form.trigger(['county', 'year', 'area', 'soilQuality', 'rainfall']);
+      form.trigger(['county', 'year', 'area', 'soilQuality']);
       return;
     }
     
@@ -224,19 +215,6 @@ export function PredictionForm({ onPrediction, onRecommendation, onFormStateChan
                     </FormItem>
                 )}
                 />
-             <FormField
-                control={control}
-                name="rainfall"
-                render={({ field }) => (
-                <FormItem>
-                    <FormLabel>Predicted Rainfall (mm)</FormLabel>
-                    <FormControl>
-                    <Input type="number" readOnly placeholder="Auto-populated" {...field} value={field.value ?? ""} className="bg-muted"/>
-                    </FormControl>
-                    <FormMessage />
-                </FormItem>
-                )}
-            />
             
             <Card className="bg-muted/30 p-4 space-y-4">
                 <p className="text-sm text-center text-muted-foreground font-semibold">For a specific prediction, select a crop and fertilizer.</p>
