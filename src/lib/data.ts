@@ -29,6 +29,7 @@ export const cropData: CropData[] = [
       { year: 2021, yield: 3.3 },
       { year: 2022, yield: 3.5 },
       { year: 2023, yield: 3.4 },
+      { year: 2024, yield: 3.6 },
     ],
   },
   {
@@ -44,6 +45,7 @@ export const cropData: CropData[] = [
       { year: 2021, yield: 2.5 },
       { year: 2022, yield: 2.3 },
       { year: 2023, yield: 2.6 },
+      { year: 2024, yield: 2.7 },
     ],
   },
   {
@@ -59,6 +61,7 @@ export const cropData: CropData[] = [
       { year: 2021, yield: 1.2 },
       { year: 2022, yield: 1.3 },
       { year: 2023, yield: 1.25 },
+      { year: 2024, yield: 1.35 },
     ],
   },
   {
@@ -74,6 +77,7 @@ export const cropData: CropData[] = [
         { year: 2021, yield: 18.5 },
         { year: 2022, yield: 19 },
         { year: 2023, yield: 18.8 },
+        { year: 2024, yield: 19.5 },
     ],
   },
   {
@@ -89,6 +93,7 @@ export const cropData: CropData[] = [
         { year: 2021, yield: 1.55 },
         { year: 2022, yield: 1.7 },
         { year: 2023, yield: 1.65 },
+        { year: 2024, yield: 1.75 },
     ]
   },
   {
@@ -104,6 +109,7 @@ export const cropData: CropData[] = [
           { year: 2021, yield: 0.85 },
           { year: 2022, yield: 0.9 },
           { year: 2023, yield: 0.88 },
+          { year: 2024, yield: 0.92 },
       ]
   },
   {
@@ -119,6 +125,7 @@ export const cropData: CropData[] = [
           { year: 2021, yield: 68 },
           { year: 2022, yield: 70 },
           { year: 2023, yield: 69 },
+          { year: 2024, yield: 71 },
       ]
   },
   {
@@ -134,6 +141,7 @@ export const cropData: CropData[] = [
           { year: 2021, yield: 14 },
           { year: 2022, yield: 15 },
           { year: 2023, yield: 16 },
+          { year: 2024, yield: 17 },
       ]
   },
   {
@@ -149,6 +157,7 @@ export const cropData: CropData[] = [
           { year: 2021, yield: 14 },
           { year: 2022, yield: 15 },
           { year: 2023, yield: 14.8 },
+          { year: 2024, yield: 15.5 },
       ]
   },
   {
@@ -164,6 +173,7 @@ export const cropData: CropData[] = [
           { year: 2021, yield: 1.4 },
           { year: 2022, yield: 1.5 },
           { year: 2023, yield: 1.4 },
+          { year: 2024, yield: 1.5 },
       ]
   },
   {
@@ -179,6 +189,7 @@ export const cropData: CropData[] = [
           { year: 2021, yield: 1.1 },
           { year: 2022, yield: 1.05 },
           { year: 2023, yield: 1.12 },
+          { year: 2024, yield: 1.15 },
       ]
   },
   {
@@ -194,6 +205,7 @@ export const cropData: CropData[] = [
           { year: 2021, yield: 13.5 },
           { year: 2022, yield: 14 },
           { year: 2023, yield: 14.2 },
+          { year: 2024, yield: 14.5 },
       ]
   },
   {
@@ -209,6 +221,7 @@ export const cropData: CropData[] = [
           { year: 2021, yield: 6.8 },
           { year: 2022, yield: 7 },
           { year: 2023, yield: 7.1 },
+          { year: 2024, yield: 7.5 },
       ]
   },
   {
@@ -224,6 +237,7 @@ export const cropData: CropData[] = [
           { year: 2021, yield: 26 },
           { year: 2022, yield: 28 },
           { year: 2023, yield: 27 },
+          { year: 2024, yield: 29 },
       ]
   },
   {
@@ -239,6 +253,87 @@ export const cropData: CropData[] = [
           { year: 2021, yield: 38 },
           { year: 2022, yield: 40 },
           { year: 2023, yield: 39 },
+          { year: 2024, yield: 41 },
+      ]
+  },
+  {
+      name: 'Onions',
+      counties: ["Kajiado", "Narok", "Laikipia", "Nakuru", "Meru", "Taita-Taveta", "Bungoma"],
+      historicalData: [
+          { year: 2015, yield: 14 },
+          { year: 2016, yield: 15 },
+          { year: 2017, yield: 14.5 },
+          { year: 2018, yield: 16 },
+          { year: 2019, yield: 17 },
+          { year: 2020, yield: 16.5 },
+          { year: 2021, yield: 18 },
+          { year: 2022, yield: 19 },
+          { year: 2023, yield: 18.5 },
+          { year: 2024, yield: 19.2 },
+      ]
+  },
+  {
+      name: 'Kale (Sukuma Wiki)',
+      counties: ["Kiambu", "Murang'a", "Nyeri", "Nakuru", "Uasin Gishu", "Kericho", "Kisii", "Meru", "Bungoma"],
+      historicalData: [
+          { year: 2015, yield: 10 },
+          { year: 2016, yield: 11 },
+          { year: 2017, yield: 10.5 },
+          { year: 2018, yield: 12 },
+          { year: 2019, yield: 13 },
+          { year: 2020, yield: 12.5 },
+          { year: 2021, yield: 14 },
+          { year: 2022, yield: 14.5 },
+          { year: 2023, yield: 14.2 },
+          { year: 2024, yield: 15 },
+      ]
+  },
+  {
+      name: 'Bananas',
+      counties: ["Kisii", "Nyamira", "Meru", "Embu", "Murang'a", "Kirinyaga", "Kakamega", "Bungoma", "Taita-Taveta"],
+      historicalData: [
+          { year: 2015, yield: 25 },
+          { year: 2016, yield: 27 },
+          { year: 2017, yield: 26 },
+          { year: 2018, yield: 29 },
+          { year: 2019, yield: 30 },
+          { year: 2020, yield: 32 },
+          { year: 2021, yield: 34 },
+          { year: 2022, yield: 35 },
+          { year: 2023, yield: 33 },
+          { year: 2024, yield: 36 },
+      ]
+  },
+  {
+      name: 'Carrots',
+      counties: ["Nyandarua", "Kiambu", "Nakuru", "Elgeyo-Marakwet", "Uasin Gishu", "Meru"],
+      historicalData: [
+          { year: 2015, yield: 20 },
+          { year: 2016, yield: 22 },
+          { year: 2017, yield: 21 },
+          { year: 2018, yield: 24 },
+          { year: 2019, yield: 25 },
+          { year: 2020, yield: 23 },
+          { year: 2021, yield: 26 },
+          { year: 2022, yield: 27 },
+          { year: 2023, yield: 26.5 },
+          { year: 2024, yield: 28 },
+      ]
+  },
+  {
+      name: 'Capsicum',
+      counties: ["Kajiado", "Nakuru", "Kiambu", "Murang'a", "Laikipia", "Taita-Taveta", "Kirinyaga"],
+      historicalData: [
+          { year: 2015, yield: 8 },
+          { year: 2016, yield: 8.5 },
+          { year: 2017, yield: 8.2 },
+          { year: 2018, yield: 9 },
+          { year: 2019, yield: 9.5 },
+          { year: 2020, yield: 10 },
+          { year: 2021, yield: 10.5 },
+          { year: 2022, yield: 11 },
+          { year: 2023, yield: 10.8 },
+          { year: 2024, yield: 11.5 },
       ]
   }
 ];
