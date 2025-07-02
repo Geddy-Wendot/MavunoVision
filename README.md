@@ -30,11 +30,12 @@ To run this project on your local machine, follow these steps:
 
 ### 2. Installation
 
-Clone the repository and install the required dependencies:
+Clone the repository and install the required dependencies by running this command in your terminal:
 
 ```bash
 npm install
 ```
+This command reads the `package.json` file and installs all necessary libraries for the project.
 
 ### 3. Environment Variables
 
@@ -50,17 +51,17 @@ The application uses Genkit to connect to Google's AI services. You'll need an A
 
 ### 4. Running the Development Servers
 
-This project requires two development servers to run concurrently: one for the Next.js frontend and one for the Genkit AI backend.
+This project requires two development servers to run concurrently: one for the Next.js frontend and one for the Genkit AI backend. In Visual Studio Code, you can open two separate terminals (`Terminal > New Terminal`).
 
 1.  **Start the Genkit server:**
-    Open a terminal and run:
+    In your first terminal, run:
     ```bash
     npm run genkit:dev
     ```
     This will start the Genkit development environment.
 
 2.  **Start the Next.js server:**
-    Open a second terminal and run:
+    In a second terminal, run:
     ```bash
     npm run dev
     ```
